@@ -1,5 +1,6 @@
 <?php
 // Start session if not already started (for checking login status)
+global $base_url;
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

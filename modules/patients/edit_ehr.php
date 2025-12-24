@@ -107,7 +107,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Update database
     $stmt = $conn->prepare("UPDATE ehr_records SET height=?, weight=?, bmi=?, blood_pressure=?, heart_rate=?, temperature=?, medical_history=?, current_medications=?, allergy_drugs=?, allergy_food=?, allergy_environmental=?, allergy_other=?, allergy_details=?, immunization_status=?, immunization_details=?, lab_results=?, diagnosis=?, treatment_plan=?, doctor_notes=?, visit_date=?, xray_image=?, report_document=? WHERE ehr_id=? AND doctor_id=?");
     
-    $stmt->bind_param("dddsiissiiiississssssii", 
+    // Corrected types: 24 parameters (height:d, weight:d, bmi:d, blood_pressure:s, heart_rate:i, temperature:d,
+    // medical_history:s, current_medications:s, allergy_drugs:i, allergy_food:i, allergy_environmental:i, allergy_other:i,
+    // allergy_details:s, immunization_status:s, immunization_details:s, lab_results:s, diagnosis:s, treatment_plan:s, doctor_notes:s,
+    // visit_date:s, xray_image:s, report_document:s, ehr_id:i, doctor_id:i)
+    $stmt->bind_param("dddsidssiiiissssssssssii",
         $height, $weight, $bmi, $blood_pressure, $heart_rate, $temperature,
         $medical_history, $current_medications, $allergy_drugs, $allergy_food, $allergy_environmental, 
         $allergy_other, $allergy_details, $immunization_status, $immunization_details, $lab_results,
@@ -317,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label class="form-label">X-ray / Medical Image</label>
                             <?php if ($record['xray_image']): ?>
                                 <div class="mb-2">
-                                    <img src="../../uploads/documents/<?php echo $record['xray_image']; ?>" style="max-width: 200px;" class="img-thumbnail">
+                                    <img src="../../uploads/documents/<?php echo $record['xray_image']; ?>" style="max-width: 200px;" class="img-thumbnail" alt="X-ray image">
                                 </div>
                             <?php endif; ?>
                             <input type="file" class="form-control" name="xray_image" accept="image/*">

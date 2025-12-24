@@ -118,7 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Insert into database
     $stmt = $conn->prepare("INSERT INTO ehr_records (patient_id, doctor_id, height, weight, bmi, blood_pressure, heart_rate, temperature, medical_history, current_medications, allergy_drugs, allergy_food, allergy_environmental, allergy_other, allergy_details, immunization_status, immunization_details, lab_results, diagnosis, treatment_plan, doctor_notes, visit_date, xray_image, report_document) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
-    $stmt->bind_param("iidddsidssiiiiississsss", 
+    // Fixed types string: must have 24 type chars to match 24 bound variables
+    $stmt->bind_param("iidddsidssiiiissssssssss",
         $patient_id, $doctor_id, $height, $weight, $bmi, $blood_pressure, $heart_rate, $temperature,
         $medical_history, $current_medications, $allergy_drugs, $allergy_food, $allergy_environmental, 
         $allergy_other, $allergy_details, $immunization_status, $immunization_details, $lab_results,
@@ -177,8 +178,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label">Visit Date <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" name="visit_date" value="<?php echo date('Y-m-d'); ?>" required>
+                            <label class="form-label" for="visit_date">Visit Date <span class="text-danger">*</span></label>
+                            <input id="visit_date" type="date" class="form-control" name="visit_date" value="<?php echo date('Y-m-d'); ?>" required>
                             <small class="text-muted">Date of this medical record</small>
                         </div>
                     </div>
@@ -192,26 +193,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Height (cm) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" class="form-control" name="height" required>
+                                <label class="form-label" for="height">Height (cm) <span class="text-danger">*</span></label>
+                                <input id="height" type="number" step="0.01" class="form-control" name="height" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Weight (kg) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" class="form-control" name="weight" required>
+                                <label class="form-label" for="weight">Weight (kg) <span class="text-danger">*</span></label>
+                                <input id="weight" type="number" step="0.01" class="form-control" name="weight" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Blood Pressure <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="blood_pressure" placeholder="120/80" required>
+                                <label class="form-label" for="blood_pressure">Blood Pressure <span class="text-danger">*</span></label>
+                                <input id="blood_pressure" type="text" class="form-control" name="blood_pressure" placeholder="120/80" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Heart Rate (bpm)</label>
-                                <input type="number" class="form-control" name="heart_rate" placeholder="72">
+                                <label class="form-label" for="heart_rate">Heart Rate (bpm)</label>
+                                <input id="heart_rate" type="number" class="form-control" name="heart_rate" placeholder="72">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Temperature (°C)</label>
-                                <input type="number" step="0.1" class="form-control" name="temperature" placeholder="36.5">
+                                <label class="form-label" for="temperature">Temperature (°C)</label>
+                                <input id="temperature" type="number" step="0.1" class="form-control" name="temperature" placeholder="36.5">
                             </div>
                         </div>
                     </div>
@@ -224,12 +225,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label">Medical History</label>
-                            <textarea class="form-control" name="medical_history" rows="4" placeholder="Past illnesses, surgeries, conditions..."></textarea>
+                            <label class="form-label" for="medical_history">Medical History</label>
+                            <textarea id="medical_history" class="form-control" name="medical_history" rows="4" placeholder="Past illnesses, surgeries, conditions..."></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Current Medications</label>
-                            <textarea class="form-control" name="current_medications" rows="3" placeholder="List of current medications..."></textarea>
+                            <label class="form-label" for="current_medications">Current Medications</label>
+                            <textarea id="current_medications" class="form-control" name="current_medications" rows="3" placeholder="List of current medications..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -258,8 +259,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label class="form-check-label" for="allergy_other">Other Allergies</label>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Allergy Details</label>
-                            <textarea class="form-control" name="allergy_details" rows="2" placeholder="Specify allergy details..."></textarea>
+                            <label class="form-label" for="allergy_details">Allergy Details</label>
+                            <textarea id="allergy_details" class="form-control" name="allergy_details" rows="2" placeholder="Specify allergy details..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -284,8 +285,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label class="form-check-label" for="imm3">Unknown</label>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Immunization Details</label>
-                            <textarea class="form-control" name="immunization_details" rows="2" placeholder="List vaccines and dates..."></textarea>
+                            <label class="form-label" for="immunization_details">Immunization Details</label>
+                            <textarea id="immunization_details" class="form-control" name="immunization_details" rows="2" placeholder="List vaccines and dates..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -297,20 +298,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label">Lab Results</label>
-                            <textarea class="form-control" name="lab_results" rows="3" placeholder="Laboratory test results..."></textarea>
+                            <label class="form-label" for="lab_results">Lab Results</label>
+                            <textarea id="lab_results" class="form-control" name="lab_results" rows="3" placeholder="Laboratory test results..."></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Diagnosis</label>
-                            <textarea class="form-control" name="diagnosis" rows="3" placeholder="Medical diagnosis..."></textarea>
+                            <label class="form-label" for="diagnosis">Diagnosis</label>
+                            <textarea id="diagnosis" class="form-control" name="diagnosis" rows="3" placeholder="Medical diagnosis..."></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Treatment Plan</label>
-                            <textarea class="form-control" name="treatment_plan" rows="3" placeholder="Treatment recommendations..."></textarea>
+                            <label class="form-label" for="treatment_plan">Treatment Plan</label>
+                            <textarea id="treatment_plan" class="form-control" name="treatment_plan" rows="3" placeholder="Treatment recommendations..."></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Doctor's Notes</label>
-                            <textarea class="form-control" name="doctor_notes" rows="3" placeholder="Additional notes..."></textarea>
+                            <label class="form-label" for="doctor_notes">Doctor's Notes</label>
+                            <textarea id="doctor_notes" class="form-control" name="doctor_notes" rows="3" placeholder="Additional notes..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -325,13 +326,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <label class="form-label">X-ray / Medical Image</label>
                             <input type="file" class="form-control" name="xray_image" accept="image/*" onchange="previewImage(this, 'xrayPreview')">
                             <small class="text-muted">Upload X-ray or medical images (Max 5MB)</small>
-                            <img id="xrayPreview" src="" style="display:none; max-width: 300px; margin-top: 10px;" class="img-thumbnail">
+                            <img id="xrayPreview" src="" alt="X-ray preview" style="display:none; max-width: 300px; margin-top: 10px;" class="img-thumbnail">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Lab Report / Document</label>
                             <input type="file" class="form-control" name="report_document" accept="image/*,.pdf" onchange="previewImage(this, 'reportPreview')">
                             <small class="text-muted">Upload lab reports or documents (Max 5MB)</small>
-                            <img id="reportPreview" src="" style="display:none; max-width: 300px; margin-top: 10px;" class="img-thumbnail">
+                            <img id="reportPreview" src="" alt="Report preview" style="display:none; max-width: 300px; margin-top: 10px;" class="img-thumbnail">
                         </div>
                     </div>
                 </div>
