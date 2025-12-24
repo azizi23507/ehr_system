@@ -13,7 +13,7 @@
 
 ## Directory Structure
 
-ehr-system/
+# ehr-system/
 │
 ├── css/ # Stylesheets
 │
