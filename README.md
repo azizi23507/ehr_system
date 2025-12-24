@@ -13,38 +13,33 @@
 
 ## Directory Structure
 
- ehr-system/
+<pre>
+ehr-system/
 │
-├── css/ # Stylesheets
-│
-├── js/ # JavaScript files
-│
-├── images/ # Static images (logos, icons, etc.)
-│
-├── includes/ # Reusable PHP includes
-│
-├── modules/ # Main application modules
-│ ├── auth/ # Authentication (login, logout, register)
-│ ├── patients/ # Patient management
-│ ├── appointments/ # Appointment scheduling
-│ ├── doctors/ # Doctor management
-│ └── dashboard/ # Dashboard pages
-│
-├── config/ # Configuration files
-│
-├── database/ # Database files (SQL schema)
-│
-└── uploads/ # User uploaded files
-├── documents/ # Medical documents, reports
-└── profile_pics/ # Profile pictures
+├── css/                    # Stylesheets
+├── js/                     # JavaScript files
+├── images/                 # Static images (logos, icons, etc.)
+├── includes/               # Reusable PHP includes
+├── modules/                # Main application modules
+│   ├── auth/               # Authentication
+│   ├── patients/           # Patient management
+│   ├── appointments/       # Appointment scheduling
+│   ├── doctors/            # Doctor management
+│   └── dashboard/          # Dashboard pages
+├── config/                 # Configuration files
+├── database/               # Database files (SQL schema)
+└── uploads/                # User uploaded files
+    ├── documents/          # Medical documents
+    └── profile_pics/       # Profile pictures
+</pre>
 
-
+---
 
 ## Tech Stack
 
-- Frontend: HTML5, CSS3, JavaScript
-- Backend: PHP
-- Database: MySQL
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Backend:** PHP
+- **Database:** MySQL
 
 ---
 
