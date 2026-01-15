@@ -60,6 +60,13 @@ $doctor_name = $is_logged_in ? $_SESSION['doctor_name'] : 'Guest';
                             <i class="bi bi-file-medical"></i> EHR Records
                         </a>
                     </li>
+                    
+                    <!-- Appointments - Only show if logged in -->
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (strpos($_SERVER['PHP_SELF'], 'appointments') !== false) ? 'active' : ''; ?>" href="<?php echo $base_url; ?>modules/appointments/view_appointments.php">
+                            <i class="bi bi-calendar3"></i> Appointments
+                        </a>
+                    </li>
                 <?php endif; ?>
                 
                 <!-- Contact Us -->

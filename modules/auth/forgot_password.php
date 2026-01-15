@@ -43,17 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $update_stmt->bind_param("sss", $reset_token, $reset_token_expiry, $email);
             
             if ($update_stmt->execute()) {
-                // In a real application, send email with reset link here
-                // Reset link would be: reset_password.php?token=$reset_token
+                require_once '../../config/email.php';
+                $emailService = new EmailService();
                 
-                // For this project, we'll just show the token (in production, send via email)
-                $success_message = "Password reset instructions have been sent to your email address.";
+                $email_sent = $emailService->sendPasswordResetEmail($email, $doctor['first_name'] . ' ' . $doctor['last_name'], $reset_token);
                 
-                // For demonstration purposes, show the reset link
-                $reset_link = "reset_password.php?token=" . $reset_token;
-                $success_message .= "<br><br><small class='text-muted'>For testing purposes, your reset link is:<br><a href='$reset_link'>$reset_link</a></small>";
+                $success_message = "Password reset instructions have been sent to your email address. Please check your inbox.";
                 
-                $email = ""; // Clear email field
+                $email = "";
             } else {
                 $error_message = "Failed to generate reset link. Please try again.";
             }

@@ -41,7 +41,7 @@ $stmt->close();
     <!-- Search Box -->
     <div class="card mb-4">
         <div class="card-body">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search patients by name, email, or phone..." onkeyup="searchTable('searchInput', 'patientsTable')">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by Patient ID, name, email, or phone..." onkeyup="searchTable('searchInput', 'patientsTable')">
         </div>
     </div>
     
@@ -53,6 +53,7 @@ $stmt->close();
                     <table class="table table-hover" id="patientsTable">
                         <thead class="table-primary">
                             <tr>
+                                <th>Patient ID</th>
                                 <th>Photo</th>
                                 <th>Name</th>
                                 <th>Date of Birth</th>
@@ -65,6 +66,7 @@ $stmt->close();
                         <tbody>
                             <?php while ($patient = $patients->fetch_assoc()): ?>
                                 <tr>
+                                    <td><strong>#<?php echo str_pad($patient['patient_id'], 4, '0', STR_PAD_LEFT); ?></strong></td>
                                     <td>
                                         <?php if ($patient['profile_image']): ?>
                                             <img src="../../uploads/profile_pics/<?php echo $patient['profile_image']; ?>" class="rounded-circle" width="40" height="40" style="object-fit: cover;">

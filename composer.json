@@ -1,0 +1,7 @@
+{
+    "name": "ehr-system/email-smtp",
+    "description": "EHR System with Gmail SMTP support",
+    "require": {
+        "phpmailer/phpmailer": "^7.0"
+    }
+}

@@ -1,0 +1,35 @@
+# ===========================================
+# PROTECT SENSITIVE FILES
+# ===========================================
+
+# Environment file with credentials
+.env
+
+# Composer dependencies
+vendor/
+composer.lock
+
+# User uploaded files (patient data)
+uploads/
+
+# ===========================================
+# IDE & SYSTEM FILES
+# ===========================================
+
+# IntelliJ IDEA
+.idea/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# ===========================================
+# OPTIONAL: Protect user data files
+# ===========================================
+
+# SUS results (user data)
+sus_results.json
+sus_results.csv

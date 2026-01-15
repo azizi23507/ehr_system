@@ -20,7 +20,7 @@ $base_url = "../../";
 $doctor_id = $_SESSION['doctor_id'];
 
 // Get all EHR records with patient info
-$stmt = $conn->prepare("SELECT e.*, p.first_name, p.last_name FROM ehr_records e JOIN patients p ON e.patient_id = p.patient_id WHERE e.doctor_id = ? ORDER BY e.visit_date DESC");
+$stmt = $conn->prepare("SELECT e.*, p.first_name, p.last_name, p.patient_id FROM ehr_records e JOIN patients p ON e.patient_id = p.patient_id WHERE e.doctor_id = ? ORDER BY e.visit_date DESC");
 $stmt->bind_param("i", $doctor_id);
 $stmt->execute();
 $ehr_records = $stmt->get_result();
@@ -41,7 +41,7 @@ $stmt->close();
     <!-- Search Box -->
     <div class="card mb-4">
         <div class="card-body">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search by patient name or diagnosis..." onkeyup="searchTable('searchInput', 'ehrTable')">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by Patient ID, Record ID, patient name, or diagnosis..." onkeyup="searchTable('searchInput', 'ehrTable')">
         </div>
     </div>
     
@@ -53,6 +53,8 @@ $stmt->close();
                     <table class="table table-hover" id="ehrTable">
                         <thead class="table-primary">
                             <tr>
+                                <th>Record ID</th>
+                                <th>Patient ID</th>
                                 <th>Patient Name</th>
                                 <th>Visit Date</th>
                                 <th>Blood Pressure</th>
@@ -64,6 +66,8 @@ $stmt->close();
                         <tbody>
                             <?php while ($record = $ehr_records->fetch_assoc()): ?>
                                 <tr>
+                                    <td><strong>#<?php echo str_pad($record['ehr_id'], 5, '0', STR_PAD_LEFT); ?></strong></td>
+                                    <td>#<?php echo str_pad($record['patient_id'], 4, '0', STR_PAD_LEFT); ?></td>
                                     <td><?php echo htmlspecialchars($record['first_name'] . ' ' . $record['last_name']); ?></td>
                                     <td><?php echo date('d/m/Y', strtotime($record['visit_date'])); ?></td>
                                     <td><?php echo htmlspecialchars($record['blood_pressure'] ?: 'N/A'); ?></td>

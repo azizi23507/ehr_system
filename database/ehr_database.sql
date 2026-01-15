@@ -125,6 +125,25 @@ CREATE TABLE IF NOT EXISTS login_attempts (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
+-- TABLE: appointments
+-- Purpose: Store appointment scheduling information
+-- ============================================
+CREATE TABLE IF NOT EXISTS appointments (
+    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    doctor_id INT NOT NULL,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    reason TEXT,
+    status ENUM('scheduled', 'completed', 'cancelled') DEFAULT 'scheduled',
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id) ON DELETE CASCADE,
+    FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================
 -- INDEXES for better performance
 -- ============================================
 CREATE INDEX idx_doctor_email ON doctors(email);
@@ -132,6 +151,9 @@ CREATE INDEX idx_doctor_username ON doctors(username);
 CREATE INDEX idx_patient_doctor ON patients(doctor_id);
 CREATE INDEX idx_ehr_patient ON ehr_records(patient_id);
 CREATE INDEX idx_ehr_doctor ON ehr_records(doctor_id);
+CREATE INDEX idx_appointment_patient ON appointments(patient_id);
+CREATE INDEX idx_appointment_doctor ON appointments(doctor_id);
+CREATE INDEX idx_appointment_date ON appointments(appointment_date);
 CREATE INDEX idx_login_username ON login_attempts(username);
 
 -- ============================================

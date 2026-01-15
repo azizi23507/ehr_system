@@ -59,7 +59,7 @@ $stmt->close();
     <!-- Statistics Cards -->
     <div class="row mb-4">
         <!-- Total Patients Card -->
-        <div class="col-md-6 mb-3">
+        <div class="col-md-4 mb-3">
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
@@ -79,7 +79,7 @@ $stmt->close();
         </div>
         
         <!-- Total EHR Records Card -->
-        <div class="col-md-6 mb-3">
+        <div class="col-md-4 mb-3">
             <div class="card bg-success text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
@@ -97,6 +97,39 @@ $stmt->close();
                 </div>
             </div>
         </div>
+        
+        <!-- Appointments Card -->
+        <div class="col-md-4 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Appointments</h5>
+                            <h2 class="mb-0">
+                                <?php
+                                try {
+                                    $apt_stmt = $conn->prepare("SELECT COUNT(*) as total FROM appointments WHERE doctor_id = ? AND status = 'scheduled' AND appointment_date >= CURDATE()");
+                                    $apt_stmt->bind_param("i", $doctor_id);
+                                    $apt_stmt->execute();
+                                    $apt_result = $apt_stmt->get_result();
+                                    echo $apt_result->fetch_assoc()['total'];
+                                    $apt_stmt->close();
+                                } catch (mysqli_sql_exception $e) {
+                                    echo "0";
+                                }
+                                ?>
+                            </h2>
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar3" style="font-size: 3rem; opacity: 0.5;"></i>
+                        </div>
+                    </div>
+                    <a href="../appointments/view_appointments.php" class="btn btn-light btn-sm mt-3">
+                        View Appointments <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Quick Actions -->
@@ -108,19 +141,24 @@ $stmt->close();
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <a href="../patients/add_patient.php" class="btn btn-outline-primary w-100">
                                 <i class="bi bi-person-plus"></i> Add New Patient
                             </a>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <a href="../patients/view_patients.php" class="btn btn-outline-primary w-100">
                                 <i class="bi bi-people"></i> View All Patients
                             </a>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <a href="../patients/ehr_records.php" class="btn btn-outline-primary w-100">
                                 <i class="bi bi-file-medical"></i> View EHR Records
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="../appointments/book_appointment.php" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-calendar-plus"></i> Book Appointment
                             </a>
                         </div>
                     </div>

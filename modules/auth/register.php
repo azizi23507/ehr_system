@@ -127,28 +127,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                 }
                 
-                // Insert new doctor into database
+                // Insert new doctor into database with is_verified = 0 (not verified)
                 $stmt = $conn->prepare("INSERT INTO doctors (first_name, last_name, email, username, password, phone, specialization, license_number, profile_image, verification_token, is_verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
                 $stmt->bind_param("ssssssssss", $first_name, $last_name, $email, $username, $hashed_password, $phone, $specialization, $license_number, $profile_image, $verification_token);
                 
                 if ($stmt->execute()) {
-                    // Success - In a real application, send verification email here
-                    // For this project, we'll auto-verify for testing purposes
-                    
-                    // Auto-verify the account (remove this in production)
                     $doctor_id = $stmt->insert_id;
-                    $update_stmt = $conn->prepare("UPDATE doctors SET is_verified = 1 WHERE doctor_id = ?");
-                    $update_stmt->bind_param("i", $doctor_id);
-                    $update_stmt->execute();
-                    $update_stmt->close();
                     
-                    $success_message = "Registration successful! You can now login with your credentials.";
+                    require_once '../../config/email.php';
+                    $emailService = new EmailService();
+                    $email_sent = $emailService->sendVerificationEmail($email, $first_name . ' ' . $last_name, $verification_token);
                     
-                    // Clear form fields
+                    if ($email_sent) {
+                        $success_message = "Registration successful! Please check your email to verify your account before logging in.";
+                    } else {
+                        $success_message = "Registration successful! A verification email has been sent. Please check your inbox.";
+                        $success_message .= "<br><br><div class='alert alert-info mt-3'><strong>For Testing:</strong><br>Verification link: <a href='verify_email.php?token=$verification_token' class='alert-link'>Click to Verify</a></div>";
+                    }
+                    
                     $first_name = $last_name = $email = $username = $phone = $specialization = $license_number = "";
-                    
-                    // Redirect to login page after 2 seconds
-                    header("refresh:2;url=login.php");
                 } else {
                     $error_message = "Registration failed. Please try again.";
                 }
